@@ -1,0 +1,36 @@
+schema-version: 1.0
+
+type: builder
+
+description: |
+  Le paquet xmlto est une interface pour une chaîne d'outils XSL. Il choisit une feuille de style appropriée pour la conversion que vous voulez et l'applique en utilisant un processeur XSLT externe. Il réalise également tous les post-traitements nécessaire.
+  Programmes installés: xmlif et xmlto
+  Bibliothèques installées: Aucune
+  Répertoire installé: /usr/share/xmlto
+  Descriptions courtes
+    xmlif: est un processeur d'instructions conditionnelles pour XML
+    xmlto: applique une feuille de style XSL à un document XML
+
+in:
+  version: 0.0.28
+
+dependencies:
+  - docbook-xml
+  - docbook-xsl
+  - libxslt
+
+provision:
+  - url:
+      from: https://releases.pagure.org/xmlto/xmlto-{% version %}.tar.bz2
+      todir: "{% xbeeSrc %}"
+
+build:
+  - shell:
+      cmds:
+        - LINKS="/usr/bin/links" ./configure --prefix=/usr
+        - make
+        - make install DESTDIR={% xbeeOut %}
+      directory: "{% xbeeSrc %}/xmlto-{% version %}"
+
+
+
